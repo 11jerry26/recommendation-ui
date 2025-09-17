@@ -12,9 +12,9 @@
       <van-form @submit="onSubmit">
         <div class="input-group">
           <van-field
-            v-model="username"
-            name="username"
-            :left-icon="account"
+            v-model="account"
+            name="account"
+            :left-icon="accountIcon"
             placeholder="请输入账号"
             :rules="[{ required: true, message: '请输入账号' }]"
             class="single-input"
@@ -47,35 +47,60 @@
 import { onMounted, reactive, ref } from 'vue';
 import { showSuccessToast, showFailToast } from 'vant';
 import router from '@/router'
-import account from '@/assets/login/account.png';
+import accountIcon from '@/assets/login/account.png';
 import selected from '@/assets/login/selected.png';
 import passwordIcon from '@/assets/login/password.png';
 import notSelected from '@/assets/login/not-selected.png';
+import { userLogin } from '@/api/login'
+import { getUserInformation } from '@/api/user'
+import { Result } from '@/utils/t-type';
+import { useUserStore } from '@/stores/userStore'
 
 
 
-const username = ref('');
+const account = ref('');
 const password = ref('');
 const checked = ref(false);
+const userStore = useUserStore()
 interface FormData {
-  username: string;
+  account: string;
   password: string;
 }
 const onSubmit = (values: FormData) => {
-  
+  console.log(values);
+  userLogin(values).then(({code,data,msg}:Result) => {
+    if(code === 200) {
+      showSuccessToast('登录成功!');
+      userStore.setToken(data.token);
+      //登录成功后需要处理业务
+      loginSucceed();
+    } else {
+      showFailToast(msg)
+    }
+  })
 };
 
 //登录成功处理业务
 async function loginSucceed() {
-
+  try {
+    const { code, data, msg } = await getUserInformation({account:account.value});
+    if (code === 200) {
+      userStore.setUserInfo(data);
+      router.push('/homePage')
+    } else {
+      showFailToast(msg);
+    }
+  } catch (error) {
+    console.error('获取用户信息失败:', error);
+  }
 }
 
 // 之前记住密码时自动填充账号
 onMounted(() => {
-  const savedUsername = localStorage.getItem('unam')!;
+  const savedAccount = localStorage.getItem('account')!;
   const savedPassword = localStorage.getItem('pwd')!;
-  if (savedUsername && savedPassword) {
-    username.value = savedUsername;
+  if (savedAccount && savedPassword) {
+    account.value = savedAccount;
     password.value = savedPassword;
     checked.value = true;
   }

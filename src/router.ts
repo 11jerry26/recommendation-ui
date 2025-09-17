@@ -20,7 +20,15 @@ const routes = [
       title: '登录',
       isLoginPage: true,
     },
-  }
+  },
+  {
+    name: 'homePage',
+    path: '/homePage',
+    component: () => import('@/view/homePage/index.vue'),
+    meta: {
+      title: '首页',
+    },
+  },
 ];
 
 const router = createRouter({

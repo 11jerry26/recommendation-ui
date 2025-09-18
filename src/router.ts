@@ -29,6 +29,22 @@ const routes = [
       title: '首页',
     },
   },
+  {
+    name: 'shoppingCart',
+    path: '/shoppingCart',
+    component: () => import('@/view/shoppingCart/index.vue'),
+    meta: {
+      title: '购物车',
+    },
+  },
+  {
+    name: 'myProfile',
+    path: '/myProfile',
+    component: () => import('@/view/myProfile/index.vue'),
+    meta: {
+      title: '个人中心',
+    },
+  },
 ];
 
 const router = createRouter({

@@ -1,5 +1,5 @@
 <template>
-  <van-tabbar v-model="active" active-color="#7C68EE" v-if="tabbarShow">
+  <van-tabbar v-model="active" active-color="#D4B07A" v-if="tabbarShow">
     <van-tabbar-item replace to="/homePage">
       <span>首页</span>
       <template #icon="props">

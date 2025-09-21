@@ -30,6 +30,7 @@ const product = computed(() => props.product)
     width: 175px;
     background-color: black;
     border-radius: 8px;
+    padding-bottom: 5px;
 
     img {
         width: 100%;

@@ -85,6 +85,8 @@ async function loginSucceed() {
   try {
     const { code, data, msg } = await getUserInformation({account:account.value});
     if (code === 200) {
+      console.log(data);
+      
       userStore.setUserInfo(data);
       router.push('/homePage')
     } else {

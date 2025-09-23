@@ -39,7 +39,8 @@ const browseProduct = () => {
         userId:userId.value,
         productId:product.value.productId,
         behaviorTypeId:1,
-        behaviorTime:formatToDateTime(new Date())
+        behaviorTime:formatToDateTime(new Date()),
+        isDelete:0
     }).then(({code,data,msg}:Result) => {
         if(code === 200) {
             console.log(data);

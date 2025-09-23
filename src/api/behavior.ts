@@ -29,3 +29,8 @@ export const getAllCartProduct = (data:any) => {
 export const changeCartProductCount = (data:any) => {
     return request.post(`/behavior/changeCartProductCount`,data)
 }
+
+//删除购物车商品
+export const deleteCartProduct= (data:any) => {
+    return request.post(`/behavior/deleteCartProduct`,data)
+}

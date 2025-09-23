@@ -20,26 +20,41 @@
     </div>
 
     <template #right>
-      <van-button square text="删除" type="danger" class="delete-button" />
+      <van-button
+        square
+        text="删除"
+        type="danger"
+        class="delete-button"
+        @click="handleDeleteCartProduct"
+      />
     </template>
   </van-swipe-cell>
 </template>
 
 <script setup lang="ts">
-import { CartProduct } from "@/utils/t-type";
+import { CartProduct, Result } from "@/utils/t-type";
 import { computed, onMounted, ref, watch } from "vue";
 import { getImageUrl } from "@/utils/imageUtil";
+import { useUserStore } from "@/stores/userStore";
+import { formatToDateTime } from "@/utils/time";
+import { deleteCartProduct } from "@/api/behavior";
+import { showFailToast, showSuccessToast } from "vant";
 
 const props = defineProps<{
   product: CartProduct;
 }>();
 
+const userStore = useUserStore();
+const userId = computed(() => userStore.userInfo?.userId);
 const product = computed(() => props.product);
 const cartCount = ref(1);
 
 const handleCountChange = (newCount: number) => {
   cartCount.value = newCount;
 };
+const emit = defineEmits<{
+  (e:'reload-product'):void
+}>()
 
 watch(
   product,
@@ -48,6 +63,22 @@ watch(
   },
   { immediate: true }
 );
+
+const handleDeleteCartProduct = () => {
+  deleteCartProduct({
+    userId: userId.value,
+    productId: product.value.productId,
+    behaviorTypeId:2,
+    behaviorTime: formatToDateTime(new Date()),
+  }).then(({code,data,msg}:Result) => {
+    if(code === 200) {
+      showSuccessToast('删除成功')
+      emit('reload-product')
+    } else {
+      showFailToast(msg)
+    }
+  })
+};
 </script>
 
 <style scoped lang="scss">

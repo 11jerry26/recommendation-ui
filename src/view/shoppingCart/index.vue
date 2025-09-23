@@ -6,7 +6,7 @@
     </div>
     <div class="content-box">
       <div v-if="cartProductList.length > 0">
-        <ProductItem v-for="item in cartProductList" :key="item.productId" :product="item"></ProductItem>
+        <ProductItem v-for="item in cartProductList" :key="item.productId" :product="item" @reload-product="handleReload"></ProductItem>
       </div>
       <van-empty v-else  description="购物车暂时还没有商品哦！" />
     </div>
@@ -24,7 +24,7 @@ const userStore = useUserStore()
 const userId = computed(() => userStore.userInfo?.userId)
 const cartProductList = ref<CartProduct[]>([])
 
-onMounted(() => {
+const loadCartProduct = () => {
   getAllCartProduct({
     userId:userId.value
   }).then(({code,data,msg}:Result) => {
@@ -36,6 +36,14 @@ onMounted(() => {
       showFailToast(msg)
     }
   })
+}
+
+const handleReload = () => {
+  loadCartProduct()
+}
+
+onMounted(() => {
+  loadCartProduct()
 })
 </script>
 

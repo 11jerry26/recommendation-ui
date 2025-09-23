@@ -2,10 +2,10 @@
   <div class="login-box">
     <div class="logo-wrapper">
       <div class="logo">
-        <img src="@/assets/login/logo.png" alt="" />
+        <img src="@/assets/login/icon.png" alt="" />
       </div>
       <div>
-        <span class="title">网络协同办公系统</span>
+        <span class="title">个性化推荐商城系统</span>
       </div>
     </div>
     <div class="input-wrapper">
@@ -190,7 +190,7 @@ onMounted(() => {
 .submit-btn {
   button {
     width: 100%;
-    background: #8e84e0 !important;
+    background: #D4B07A !important;
     border-radius: 4px;
     border: none !important;
     color: #fff;
@@ -198,6 +198,6 @@ onMounted(() => {
 }
 ::v-deep .van-checkbox__label {
   font-size: 16px;
-  color: #7768e2;
+  color: #D4B07A;
 }
 </style>

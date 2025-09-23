@@ -14,3 +14,18 @@ export const handleCollectAPI = (data:any) => {
 export const searchCollectStatus = (data:any) => {
     return request.post(`/behavior/searchCollectStatus`,data)
 }
+
+//加入购物车
+export const addCartAPI = (data:any) => {
+    return request.post(`/behavior/addCart`,data)
+}
+
+//查询购物车商品
+export const getAllCartProduct = (data:any) => {
+    return request.post(`/behavior/getAllCartProduct`,data)
+}
+
+//修改购物车商品数量
+export const changeCartProductCount = (data:any) => {
+    return request.post(`/behavior/changeCartProductCount`,data)
+}

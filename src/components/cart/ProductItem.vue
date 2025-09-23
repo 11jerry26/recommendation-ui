@@ -1,27 +1,67 @@
 <template>
-  <div class="item">
-    <div class="left-box">
-      <img src="@/assets/product-img/aoliao.png" alt="aoliao" />
-    </div>
-    <div class="right-box">
-      <div class="name-count">
-        <div class="name">美式复古衬衫</div>
-        <div class="count">×1</div>
+  <van-swipe-cell>
+    <div class="item">
+      <div class="left-box">
+        <img :src="getImageUrl(product.fileName)" alt="product" />
       </div>
-      <div class="price">￥50</div>
+      <div class="right-box">
+        <div class="name-count">
+          <div class="name">{{ product.productName }}</div>
+          <div class="count">
+            <Count
+              :count="cartCount"
+              @change-count="handleCountChange"
+              :productId="product.productId"
+            ></Count>
+          </div>
+        </div>
+        <div class="price">￥{{ product.price }}</div>
+      </div>
     </div>
-  </div>
+
+    <template #right>
+      <van-button square text="删除" type="danger" class="delete-button" />
+    </template>
+  </van-swipe-cell>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { CartProduct } from "@/utils/t-type";
+import { computed, onMounted, ref, watch } from "vue";
+import { getImageUrl } from "@/utils/imageUtil";
+
+const props = defineProps<{
+  product: CartProduct;
+}>();
+
+const product = computed(() => props.product);
+const cartCount = ref(1);
+
+const handleCountChange = (newCount: number) => {
+  cartCount.value = newCount;
+};
+
+watch(
+  product,
+  (newVal) => {
+    cartCount.value = newVal.cartCount;
+  },
+  { immediate: true }
+);
+</script>
 
 <style scoped lang="scss">
 .item {
-  width: 100vw;
-  height: 100px;
+  width: 90%;
+  margin-left: auto;
+  height: 6.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
+  box-shadow: 0px 2px 10px #b5afaf;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 
   .left-box {
     flex: 1;
@@ -37,6 +77,7 @@
   .right-box {
     flex: 3;
     height: 80px;
+    padding: 0 6px;
 
     .name-count {
       width: 100%;
@@ -46,7 +87,7 @@
       align-items: center;
 
       .count {
-        width: 20px;
+        width: 80px;
         height: 20px;
         display: flex;
         justify-content: center;
@@ -60,5 +101,11 @@
       font-weight: 700;
     }
   }
+}
+
+:deep(.van-button--square) {
+  height: 100%;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 </style>

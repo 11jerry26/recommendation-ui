@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Count: typeof import('./src/components/cart/Count.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     ProductCard: typeof import('./src/components/product/ProductCard.vue')['default']
     ProductItem: typeof import('./src/components/cart/ProductItem.vue')['default']
@@ -16,9 +17,12 @@ declare module 'vue' {
     TabbarComponent: typeof import('./src/components/TabbarComponent.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCheckbox: typeof import('vant/es')['Checkbox']
+    VanEmpty: typeof import('vant/es')['Empty']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
     VanList: typeof import('vant/es')['List']
+    VanPopup: typeof import('vant/es')['Popup']
+    VanSwipeCell: typeof import('vant/es')['SwipeCell']
     VanTab: typeof import('vant/es')['Tab']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']

@@ -27,3 +27,16 @@ export interface Product {
   price:number
   sellCount:number
 }
+
+//购物车中商品信息接口
+export interface CartProduct {
+  productId: number
+  productCategory:string
+  productSecondCategory:string
+  productName:string
+  fileName:string
+  description:string
+  price:number
+  sellCount:number
+  cartCount:number
+}

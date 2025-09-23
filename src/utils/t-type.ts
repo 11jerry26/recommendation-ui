@@ -25,4 +25,5 @@ export interface Product {
   fileName:string
   description:string
   price:number
+  sellCount:number
 }

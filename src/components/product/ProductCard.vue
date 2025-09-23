@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="toDetail">
     <div class="image-box">
         <img :src=getImageUrl(product.fileName) alt="product">
     </div>
@@ -15,14 +15,46 @@
 </template>
 
 <script setup lang="ts">
-import { Product } from "@/utils/t-type"
+import { Product, Result } from "@/utils/t-type"
 import { getImageUrl } from "@/utils/imageUtil";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { useProductStore } from '@/stores/productStore'
+import { browseProductAPI } from "@/api/behavior";
+import { useUserStore } from "@/stores/userStore";
+import{formatToDateTime} from '@/utils/time'
+import { showFailToast } from "vant";
 
+const productStore = useProductStore()
+const userStore = useUserStore()
+const userId = computed(() => userStore.userInfo?.userId)
+const router = useRouter()
 const props = defineProps<{
     product:Product
 }>()
 const product = computed(() => props.product)
+
+const browseProduct = () => {
+    browseProductAPI({
+        userId:userId.value,
+        productId:product.value.productId,
+        behaviorTypeId:1,
+        behaviorTime:formatToDateTime(new Date())
+    }).then(({code,data,msg}:Result) => {
+        if(code === 200) {
+            console.log(data);
+        } else {
+            showFailToast(msg)
+        }
+    }
+    )
+}
+
+const toDetail = () => {
+    productStore.setCurrentProduct(product.value)
+    router.push('/productDetail')
+    browseProduct()
+}
 </script>
 
 <style scoped lang="scss">

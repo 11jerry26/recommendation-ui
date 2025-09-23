@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     ProductCard: typeof import('./src/components/product/ProductCard.vue')['default']
+    ProductItem: typeof import('./src/components/cart/ProductItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TabbarComponent: typeof import('./src/components/TabbarComponent.vue')['default']
@@ -18,7 +19,9 @@ declare module 'vue' {
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']
     VanList: typeof import('vant/es')['List']
+    VanTab: typeof import('vant/es')['Tab']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
+    VanTabs: typeof import('vant/es')['Tabs']
   }
 }

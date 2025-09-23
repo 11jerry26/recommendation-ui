@@ -4,3 +4,4 @@ import request from "@/utils/request"
 export const getProductList = (data:any) => {
     return request.post(`/product/getProductByPage`,data)
 }
+

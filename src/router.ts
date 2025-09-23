@@ -45,6 +45,14 @@ const routes = [
       title: '个人中心',
     },
   },
+    {
+    name: 'productDetail',
+    path: '/productDetail',
+    component: () => import('@/view/homePage/ProductDetail.vue'),
+    meta: {
+      title: '商品详情',
+    },
+  },
 ];
 
 const router = createRouter({

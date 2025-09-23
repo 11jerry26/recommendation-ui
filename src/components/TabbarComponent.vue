@@ -106,5 +106,15 @@ function updateActiveIndex() {
 </script>
 
 <style scoped lang="scss">
+</style>
 
+<style>
+.van-tabbar {
+    z-index: var(--van-tabbar-z-index);
+    display: flex;
+    box-sizing: content-box;
+    width: 100vw;
+    height: var(--van-tabbar-height);
+    background: var(--van-tabbar-background);
+}
 </style>

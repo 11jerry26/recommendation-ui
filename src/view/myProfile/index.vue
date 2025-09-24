@@ -4,19 +4,21 @@
       <div class="avatar">
         <img src="@/assets/operation-img/avatar.png" alt="avatar" />
       </div>
-      <div class="name">黄油奶牛</div>
+      <div class="name">{{userName}}</div>
       <div class="log-out" @click="showExit = true"> 
         <img src="@/assets/login/logout.png" alt="logout">
       </div>
     </div>
     <div class="my-order">
       <div class="text">我的订单</div>
-      <img src="@/assets/operation-img/arrow.png" alt="alt" />
+      <img src="@/assets/operation-img/arrow.png" alt="alt" />  
     </div>
     <div class="bottom-box">
       <van-tabs v-model:active="active" :color="'#d4b07a'">
         <van-tab title="猜你喜欢">猜你喜欢</van-tab>
-        <van-tab title="我的收藏">我的收藏 2</van-tab>
+        <van-tab title="我的收藏">
+          <MyCollection></MyCollection>
+        </van-tab>
       </van-tabs>
     </div>
 
@@ -40,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from "@/stores/userStore";
 import { showSuccessToast } from "vant";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -47,6 +50,8 @@ import { useRouter } from "vue-router";
 const active = ref(0);
 const showExit = ref(false)
 const router = useRouter()
+const userStore = useUserStore()
+const userName = userStore.userInfo?.userName
 
 const logout = () => {
   router.push('/login')
@@ -172,5 +177,10 @@ const logout = () => {
 .cancel {
   background-color: #8d7a5d;
   color: white;
+}
+
+:deep(.van-tabs__content) {
+  margin-top: 15px !important;
+  background-color: white !important;
 }
 </style>

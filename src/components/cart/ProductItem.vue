@@ -1,4 +1,8 @@
 <template>
+<div class="big-box">
+    <div class="checkbox">
+    <van-checkbox v-model="checked" />
+  </div>
   <van-swipe-cell>
     <div class="item">
       <div class="left-box">
@@ -29,6 +33,8 @@
       />
     </template>
   </van-swipe-cell>
+</div>
+
 </template>
 
 <script setup lang="ts">
@@ -42,19 +48,30 @@ import { showFailToast, showSuccessToast } from "vant";
 
 const props = defineProps<{
   product: CartProduct;
+  checked?: boolean;
 }>();
+
+const product = computed(() => props.product);
+const checked = computed({
+  get:() => props.checked,
+  set: (newVal: boolean) => {
+    emit('toggle-check', product.value.productId, newVal);
+  }
+})
 
 const userStore = useUserStore();
 const userId = computed(() => userStore.userInfo?.userId);
-const product = computed(() => props.product);
+
 const cartCount = ref(1);
 
 const handleCountChange = (newCount: number) => {
   cartCount.value = newCount;
 };
 const emit = defineEmits<{
-  (e:'reload-product'):void
-}>()
+  (e: "reload-product"): void;
+  (e: 'toggle-check', productId: number, checked: boolean): void;
+}>();
+
 
 watch(
   product,
@@ -68,20 +85,32 @@ const handleDeleteCartProduct = () => {
   deleteCartProduct({
     userId: userId.value,
     productId: product.value.productId,
-    behaviorTypeId:2,
+    behaviorTypeId: 2,
     behaviorTime: formatToDateTime(new Date()),
-  }).then(({code,data,msg}:Result) => {
-    if(code === 200) {
-      showSuccessToast('删除成功')
-      emit('reload-product')
+  }).then(({ code, data, msg }: Result) => {
+    if (code === 200) {
+      showSuccessToast("删除成功");
+      emit("reload-product");
     } else {
-      showFailToast(msg)
+      showFailToast(msg);
     }
-  })
+  });
 };
+
+
 </script>
 
 <style scoped lang="scss">
+.big-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  .checkbox {
+    margin-left: 10px;
+  }
+}
+
 .item {
   width: 90%;
   margin-left: auto;
@@ -138,5 +167,13 @@ const handleDeleteCartProduct = () => {
   height: 100%;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+}
+
+:deep(.van-swipe-cell) {
+    position: relative;
+    overflow: hidden;
+    cursor: -webkit-grab;
+    cursor: grab;
+    width: 100%;
 }
 </style>

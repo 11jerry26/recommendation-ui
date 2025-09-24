@@ -32,7 +32,7 @@
         </div>
         <div class="buttons">
           <div class="add-cart" @click="addCartShow = true">加入购物车</div>
-          <div class="purchase">购买</div>
+          <div class="purchase" @click="purchasePanelshow = true">购买</div>
         </div>
       </div>
     </div>
@@ -54,6 +54,24 @@
         <div class="button" @click="addCart">加入购物车</div>
       </div>
     </van-popup>
+
+    <van-popup
+      v-model:show="purchasePanelshow"
+      position="bottom"
+      round
+      :style="{ height: '40%' }"
+    >
+      <div class="product-show">
+        <div class="box">
+          <img :src="getImageUrl(product.fileName)" alt="product" />
+          <div class="right-box">
+            <div class="product-price">￥{{ product.price }}</div>
+            <Count @change-count="handleCountChange" :count="count"></Count>
+          </div>
+        </div>
+        <div class="button" @click="purchase">立即支付￥{{product.price * count}}</div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -63,7 +81,7 @@ import { useProductStore } from "@/stores/productStore";
 import { getImageUrl } from "@/utils/imageUtil";
 import { computed, onMounted, ref, watch } from "vue";
 import { useUserStore } from "@/stores/userStore";
-import { addCartAPI, handleCollectAPI, searchCollectStatus } from "@/api/behavior";
+import { addCartAPI, handleCollectAPI, purchaseCartProduct, searchCollectStatus } from "@/api/behavior";
 import { formatToDateTime } from "@/utils/time";
 import { Result } from "@/utils/t-type";
 import { showFailToast, showSuccessToast } from "vant";
@@ -76,6 +94,7 @@ const userStore = useUserStore();
 const userId = computed(() => userStore.userInfo?.userId);
 const isCollected = ref(false);
 const addCartShow = ref(false);
+const purchasePanelshow = ref(false)
 const count = ref(1)
 
 //处理收藏
@@ -123,6 +142,24 @@ const addCart = () => {
       showFailToast(msg)
     }
   })
+}
+
+const purchase = () => {
+  const requestList = [{
+    userId: userId.value,
+      productId: product.value!.productId,
+      cartCount: count.value,
+      sellCount: product.value!.sellCount,
+      behaviorTime: formatToDateTime(new Date())
+  }]
+  purchaseCartProduct(requestList).then(({ code, data, msg }: Result) => {
+    if (code === 200) {
+      showSuccessToast('购买成功');
+     purchasePanelshow.value = false
+    } else {
+      showFailToast(msg);
+    }
+  });
 }
 
 

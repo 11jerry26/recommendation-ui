@@ -9,3 +9,8 @@ export const getMyCollection = (data:any) => {
 export const getUserOrder = (data:any) => {
     return request.post(`/behavior/getMyOrder`,data)
 }
+
+//删除用户订单
+export const deleteUserOrder = (data:any) => {
+    return request.post(`/behavior/deleteUserOrder`,data)
+}

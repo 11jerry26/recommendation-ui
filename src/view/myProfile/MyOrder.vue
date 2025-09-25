@@ -6,7 +6,10 @@
         <div class="blank-box"></div>
     </div>
     <div class="content-box">
-        <OrderItem v-for="(order,index) in orderInfoList" :key="index" :order="order"></OrderItem>
+        <div v-if="orderInfoList.length > 0">
+            <OrderItem v-for="(order,index) in orderInfoList" :key="index" :order="order" @reload-orders="handleReload"></OrderItem>
+        </div>
+        <van-empty v-else description="暂无订单哦" />
     </div>
   </div>
 </template>
@@ -25,8 +28,9 @@ const userStore = useUserStore()
 const userId = computed(() => userStore.userInfo?.userId)
 const orderInfoList = ref<any[]>([])
 
-onMounted(() => {
-    getUserOrder({
+const loadOrder = () => {
+    orderInfoList.value = []
+ getUserOrder({
         userId:userId.value,
         isDelete:0
     }).then(({code,data,msg}:Result) => {
@@ -39,6 +43,7 @@ onMounted(() => {
                 }).then((res:Result) => {
                     if(res.code === 200) {
                         orderInfoList.value.push({
+                            id:order.id,
                             productId:order.productId,
                             productName:res.data.productName,
                             fileName:res.data.fileName,
@@ -57,6 +62,14 @@ onMounted(() => {
             showFailToast(msg)
         }
     })
+}
+
+const handleReload = () => {
+    loadOrder()
+}
+
+onMounted(() => {
+   loadOrder()
 })
 </script>
 

@@ -19,11 +19,29 @@
     </div>
 
     <div class="operations">
+        <div class="delete" @click="showConfirm = true">删除订单</div>
       <div class="buttons">
         <div class="add-button" @click="addToCart">加入购物车</div>
         <div class="purchase-again" @click="purchaseAgain">再买一单</div>
       </div>
     </div>
+
+     <van-popup v-model:show="showConfirm" class="custom-popup">
+            <div class="confirm-box">
+              <div class="warning-img">
+                <img
+                  src="@/assets/login/warning.png"
+                  alt="warning"
+                  style="height: 48px; width: 48px"
+                />
+              </div>
+              <p>确定删除该订单？</p>
+              <div class="confirm-buttons">
+                <div class="cancel" @click="showConfirm = false">取消</div>
+                <div class="sure" @click="sureDelete">确定</div>
+              </div>
+            </div>
+          </van-popup>
   </div>
 </template>
 
@@ -38,6 +56,7 @@ import { showFailToast, showSuccessToast } from "vant";
 import { useProductStore } from "@/stores/productStore";
 import { useRouter } from "vue-router";
 import { getProductByIdAPI } from "@/api/product";
+import { deleteUserOrder } from "@/api/myprofile";
 
 const props = defineProps<{
   order: Order;
@@ -48,6 +67,11 @@ const order = computed(() => props.order);
 const userStore = useUserStore();
 const userId = computed(() => userStore.userInfo?.userId);
 const productStore = useProductStore();
+const showConfirm = ref(false)
+
+const emit = defineEmits<{
+    (e:'reload-orders'):void
+}>()
 
 const addToCart = () => {
   addCartAPI({
@@ -75,6 +99,20 @@ const purchaseAgain = () => {
         if(code === 200) {
             productStore.setCurrentProduct(data)
             router.push('/productDetail')
+        } else {
+            showFailToast(msg)
+        }
+    })
+}
+
+const sureDelete = () => {
+    deleteUserOrder({
+        id:order.value.id
+    }).then(({code,data,msg}:Result) => {
+        if(code === 200) {
+            showSuccessToast('删除成功')
+            showConfirm.value =false
+            emit('reload-orders')
         } else {
             showFailToast(msg)
         }
@@ -165,6 +203,12 @@ const purchaseAgain = () => {
   display: flex;
   align-items: center;
 
+  .delete {
+    color: #b5afaf;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+
   .buttons {
     margin-left: auto;
     display: flex;
@@ -200,5 +244,59 @@ const purchaseAgain = () => {
     font-weight: 500;
     background-color: chocolate;
   }
+}
+
+.confirm-box {
+  background: linear-gradient(180deg, #e8defe 0%, #f6f8fe 100%);
+  width: 295px;
+  height: 200px;
+  border-radius: 8px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    margin: 0 auto 10px;
+  }
+}
+
+.warning-img {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin: auto;
+}
+
+.sure,
+.cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  width: 120px;
+  height: 32px;
+  border-radius: 16px;
+}
+
+.sure {
+  border: 1px solid black;
+}
+
+.cancel {
+  background-color: #8d7a5d;
+  color: white;
 }
 </style>

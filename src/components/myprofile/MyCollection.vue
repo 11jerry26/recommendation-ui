@@ -1,6 +1,9 @@
 <template>
   <div class="collection-box">
-    <CollectItem v-for="item in collectionList" :key="item.productId" :product="item"></CollectItem>
+    <div v-if="collectionList.length > 0">
+        <CollectItem v-for="item in collectionList" :key="item.productId" :product="item"></CollectItem>
+    </div>
+    <van-empty v-else description="您还没有收藏商品哦" />
   </div>
 </template>
 

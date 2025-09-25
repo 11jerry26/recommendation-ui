@@ -43,6 +43,7 @@ export interface CartProduct {
 
 //订单接口
 export interface Order {
+  id:number,
   productId:number,
   productName:string
   fileName:string

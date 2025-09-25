@@ -12,6 +12,7 @@ declare module 'vue' {
     Count: typeof import('./src/components/cart/Count.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     MyCollection: typeof import('./src/components/myprofile/MyCollection.vue')['default']
+    OrderItem: typeof import('./src/components/myprofile/OrderItem.vue')['default']
     ProductCard: typeof import('./src/components/product/ProductCard.vue')['default']
     ProductItem: typeof import('./src/components/cart/ProductItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

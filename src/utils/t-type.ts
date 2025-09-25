@@ -40,3 +40,14 @@ export interface CartProduct {
   sellCount:number
   cartCount:number
 }
+
+//订单接口
+export interface Order {
+  productId:number,
+  productName:string
+  fileName:string
+  description:string
+  price:number
+  createTime:string
+  count:number
+}

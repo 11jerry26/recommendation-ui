@@ -9,7 +9,7 @@
         <img src="@/assets/login/logout.png" alt="logout">
       </div>
     </div>
-    <div class="my-order">
+    <div class="my-order"  @click="router.push('/myOrder')">
       <div class="text">我的订单</div>
       <img src="@/assets/operation-img/arrow.png" alt="alt" />  
     </div>

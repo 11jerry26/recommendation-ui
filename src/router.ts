@@ -53,6 +53,14 @@ const routes = [
       title: '商品详情',
     },
   },
+      {
+    name: 'myOrder',
+    path: '/myOrder',
+    component: () => import('@/view/myProfile/MyOrder.vue'),
+    meta: {
+      title: '我的订单',
+    },
+  },
 ];
 
 const router = createRouter({
